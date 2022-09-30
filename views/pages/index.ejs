@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <title>Blockchain</title>
+</head>
+<body>
+
+<div class="container">
+
+    <fieldset id="information">
+        <legend>Information</legend>
+        Reward to mine a block : 1 coin <br>
+        Minimum gas fee : 0.1 coin <br>
+        MemPool size : <%= blockchain.mempool.length %> <br>
+    </fieldset>
+
+    <fieldset id="information">
+        <legend>🪙 My account</legend>
+        <h2><%= coins %> 🪙</h2>
+    </fieldset>
+
+    <fieldset class="walletKey">
+        <legend>🔑 My Wallet</legend>
+        <div class="key"><%= myWallet %></div>
+    </fieldset>
+
+    <fieldset class="walletKey">
+        <legend>🗝 Public Wallet</legend>
+        <div class="key"><%= publicWallet %></div>
+    </fieldset>
+
+</div>
+
+<div class="container">
+
+    <% othersWalletsList.forEach((wallet, index) => { %>
+
+        <fieldset class="walletKey">
+            <legend>💳 Other random wallet</legend>
+            <div class="key"><%= wallet %></div>
+        </fieldset>
+
+    <% }) %>
+
+</div>
+
+<hr />
+
+<div class="container">
+
+    <fieldset id="information">
+        <legend>Send a transaction</legend>
+        <form action="/transaction" method="POST">
+            <div>
+                <label for="from">From</label>
+                <input name="from" id="from" value="<%= myWallet %>">
+            </div>
+            <div>
+                <label for="to">To</label>
+                <input name="to" id="to" value="">
+            </div>
+            <div>
+                <label for="amount">Amount</label>
+                <input name="amount" id="amount" type="number" min="0" value="0">
+            </div>
+            <div>
+                <button>Send</button>
+            </div>
+        </form>
+    </fieldset>
+
+    <fieldset id="information">
+        <legend>Mine a block</legend>
+        <button id="mineButton" onclick="location.href='/mine'" type="button">Mine a block</button>
+    </fieldset>
+
+
+</div>
+
+
+
+
+
+<ul>
+
+
+
+    <% blockchain.chain.forEach((block, index) => { %>
+        <ul>
+            <li><h2>🧱 Block <%= index %> : <em><%= block.hash.slice(slice) %></em> 🎲️ : <em><%= block.nonce %></em></h2></li>
+            <li><h3>⛓ Previous : <em><%= block.previousHash.slice(slice) %></em></h3></li>
+
+            <ul>
+                <% block.data.forEach((transaction)=> { %>
+                    <ul>
+
+                        <li>From :
+                            <% if (myWallet === transaction.from) { %>🔑 <% } %>
+                            <% if (publicWallet === transaction.from) { %>🗝 <% } %>
+                            <%= transaction.from.slice(slice) %>
+                        </li>
+
+                        <li>To :
+                            <% if (myWallet === transaction.to) { %>🔑 <% } %>
+                            <% if (publicWallet === transaction.to) { %>🗝 <% } %>
+                            <%= transaction.to.slice(slice)  %>
+                        </li>
+
+                        <li><strong><%= transaction.amount %> 🪙</strong></li>
+                        <% if (transaction.smartContract) { %>
+                            <h3>SmartContract (NFT) :<br />
+                                <img width="160" src="data:image/png;base64,<%= transaction.smartContract %>" alt="nft"/>
+                            </h3>
+                        <% } %>
+                    </ul>
+                    <hr />
+                <% }) %>
+            </ul>
+        </ul>
+        <hr />
+    <% }) %>
+</ul>
+</body>
+</html>

@@ -13,7 +13,7 @@ Then run `npm start` to start the server.
 
 Open your favorite browser and go to `http://localhost:3000/`.
 
-Note : The web interface is not fully functional but all the basic features are implemented in code (including a very basic usage of NFC).
+Note : The web interface is not fully functional but all the basic features are implemented in code (including a very basic usage of NFT).
 
 ## Documentation
 
